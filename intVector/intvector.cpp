@@ -92,9 +92,9 @@ int& IntVector::operator[] (int index) {
 
 ostream& operator<< (ostream& out, const IntVector& rhs) {
     for(int i = 0; i < rhs.size(); i++) {
-		if(i > 0) {
-			out << " ";
-		}
+        if(i > 0) {
+            out << " ";
+        }
         out << rhs.at(i);
     }
     return out;
