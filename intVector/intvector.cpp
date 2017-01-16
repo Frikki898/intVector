@@ -48,11 +48,14 @@ void IntVector::set_value_at(int index, int elem) {
 
 int IntVector::size() const {
     // TODO: Implement
-    return 0;
+    return capacity;
 }
 
 bool IntVector::empty() const {
-    // TODO: Implement
+    if(capacity == 0)
+    {
+        return true;
+    }
     return false;
 }
 
