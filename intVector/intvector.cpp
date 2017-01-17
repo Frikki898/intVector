@@ -6,11 +6,21 @@ using namespace std;
 // Constructors
 
 IntVector::IntVector() {
-    // TODO: Implement
+    count = 0;
+    capacity = INITIAL_CAPACITY;
+    array = new int[capacity];
 }
 
 IntVector::IntVector(int size, int value) {
-    // TODO: Implement
+    capacity = INITIAL_CAPACITY;
+    array = new int[capacity];
+
+    for(int i = 0; i < size; i++)
+    {
+        array[i] = value;
+        count++;
+    }
+    count = size;
 }
 
 IntVector::IntVector(const IntVector& vec)
@@ -24,31 +34,52 @@ IntVector::IntVector(const IntVector& vec)
 
 
 IntVector::~IntVector() {
-    // TODO: Implement
+    if(array != NULL)
+    {
+        delete[] array;
+    }
+    count = 0;
 }
 
 // Public member functions
 
 void IntVector::push_back(int elem) {
-    // TODO: Implement
+    if(count == capacity)
+    {
+        resizeArrayCheck();
+    }
+
+    array[count] = elem;
+    count++;
 }
 
 void IntVector::insert(int index, int elem) {
-    // TODO: Implement
+    resizeArrayCheck();
+    for(int i = count; i > index; i--)
+    {
+        array[i] = array[i-1];
+    }
+    array[index] = elem;
+    count++;
 }
 
 int IntVector::at(int index) const {
-    // TODO: Implement
-    return 0;
+    if(index > count || index < 0)
+    {
+        //kasta error
+    }
+    else
+    {
+        return array[index];
+    }
 }
 
 void IntVector::set_value_at(int index, int elem) {
-    // TODO: Implement
+    array[index] = elem;
 }
 
 int IntVector::size() const {
-    // TODO: Implement
-    return capacity;
+    return count;
 }
 
 bool IntVector::empty() const {
@@ -60,16 +91,33 @@ bool IntVector::empty() const {
 }
 
 void IntVector::remove_at(int index) {
-    // TODO: Implement
+    for(int i = index; i < count; i++)
+    {
+        cout << array[index] << " becomes " << array[index+1] << endl;
+        array[i] = array[i+1];
+    }
+
+    array[count-1] = NULL;
+    count--;
 }
 
 int IntVector::pop_back() {
-    // TODO: Implement
-    return 0;
+    int popped = 0;
+
+    popped = array[count-1];
+    array[count-1] = NULL;
+
+    count--;
+
+    return popped;
 }
 
 void IntVector::clear() {
-    // TODO: Implement
+    for(int i = 0; i < count; i++)
+    {
+        array[i] = NULL;
+    }
+    count = 0;
 }
 
 // Overloaded operators
@@ -101,4 +149,22 @@ ostream& operator<< (ostream& out, const IntVector& rhs) {
         out << rhs.at(i);
     }
     return out;
+}
+
+void IntVector::resizeArrayCheck()
+{
+    if(count == capacity)
+    {
+        capacity *= 2;
+
+        int *tempArray = new int[capacity];
+
+        for(int i = 0; i < count; i++)
+        {
+            tempArray[i] = array[i];
+        }
+        delete[] array;
+
+        array = tempArray;
+    }
 }

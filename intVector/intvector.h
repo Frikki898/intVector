@@ -64,6 +64,7 @@ class IntVector
         void remove_at(int index);
         // Removes all the elements from the list
         void clear();
+        void resizeArrayCheck();
 
         // Overloaded = operator.
         void operator=(const IntVector& vec);
