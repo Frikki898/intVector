@@ -5,8 +5,8 @@ using namespace std;
 
 int main()
 {
-    IntVector v1(-3,4), v2(10);
-
+    IntVector v1, v2(10);
+    
     cout << "first vector:" << endl;
     cout << v1 << endl;
 

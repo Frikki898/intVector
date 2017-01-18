@@ -12,26 +12,28 @@ IntVector::IntVector() {
 }
 
 IntVector::IntVector(int size, int value) {
+    count = 0;
     capacity = INITIAL_CAPACITY;
     array = new int[capacity];
 
-    for(int i = 0; i < size; i++)
+    if(size >= 0)
     {
-        array[i] = value;
-        count++;
+        for(int i = 0; i < size; i++)
+        {
+            resizeArrayCheck();
+            array[i] = value;
+            count++;
+        }
     }
-    count = size;
 }
 
-IntVector::IntVector(const IntVector& vec)
-    : capacity(vec.capacity), count(vec.count) {
+IntVector::IntVector(const IntVector& vec) : capacity(vec.capacity), count(vec.count) {
     array = new int[capacity];
 
     for(int i = 0; i < count; i++) {
         array[i] = vec.array[i];
     }
 }
-
 
 IntVector::~IntVector() {
     if(array != NULL)
@@ -51,9 +53,10 @@ void IntVector::push_back(int elem) {
 }
 
 void IntVector::insert(int index, int elem) {
-    if(index > count-1 || index < 0)
+
+    if(index > count || index < 0)
     {
-        //kasta error
+        throw IndexOutOfRangeException();
     }
     else
     {
@@ -71,7 +74,7 @@ void IntVector::insert(int index, int elem) {
 int IntVector::at(int index) const {
     if(index > count-1 || index < 0)
     {
-        //kasta error
+        throw IndexOutOfRangeException();
     }
     else
     {
@@ -80,12 +83,12 @@ int IntVector::at(int index) const {
 }
 
 void IntVector::set_value_at(int index, int elem) {
-    if(index > count-1 || index < 0)
+    if(index >= count || index < 0)
     {
-        //kasta error
+        throw IndexOutOfRangeException();
     }
     else
-    {
+    {        
         array[index] = elem;
     }
 }
@@ -95,7 +98,7 @@ int IntVector::size() const {
 }
 
 bool IntVector::empty() const {
-    if(capacity == 0)
+    if(count == 0)
     {
         return true;
     }
@@ -103,34 +106,35 @@ bool IntVector::empty() const {
 }
 
 void IntVector::remove_at(int index) {
-    if(index > count-1 || index < 0)
+    if(count == 0)
     {
-        //kasta error
+        throw IndexOutOfRangeException();
+    }
+    else if(index >= count || index < 0)
+    {
+        throw IndexOutOfRangeException();
     }
     else
     {
         for(int i = index; i < count; i++)
         {
-            array[i] = array[i+1];
+            array[i] = array[i + 1];
         }
-
-        array[count-1] = NULL;
         count--;
     }
 
 }
 
 int IntVector::pop_back() {
-    if(empty())
+    if(count == 0)
     {
-        //empty exeption
+        throw EmptyException();
     }
     else
     {
         int popped = 0;
 
         popped = array[count-1];
-        array[count-1] = NULL;
 
         count--;
 
@@ -140,11 +144,11 @@ int IntVector::pop_back() {
 }
 
 void IntVector::clear() {
-    for(int i = 0; i < count; i++)
+    int howManyInList = count;
+    for(int i = 0; i < howManyInList; i++)
     {
-        array[i] = NULL;
+        pop_back();
     }
-    count = 0;
 }
 
 // Overloaded operators
@@ -166,7 +170,7 @@ void IntVector::operator=(const IntVector& vec) {
 int& IntVector::operator[] (int index) {
     if(index > count-1 || index < 0)
     {
-        //kasta error
+        throw IndexOutOfRangeException();
     }
     else
     {
