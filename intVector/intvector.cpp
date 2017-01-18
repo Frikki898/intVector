@@ -44,27 +44,32 @@ IntVector::~IntVector() {
 // Public member functions
 
 void IntVector::push_back(int elem) {
-    if(count == capacity)
-    {
-        resizeArrayCheck();
-    }
+    resizeArrayCheck();
 
     array[count] = elem;
     count++;
 }
 
 void IntVector::insert(int index, int elem) {
-    resizeArrayCheck();
-    for(int i = count; i > index; i--)
+    if(index > count-1 || index < 0)
     {
-        array[i] = array[i-1];
+        //kasta error
     }
-    array[index] = elem;
-    count++;
+    else
+    {
+        resizeArrayCheck();
+        for(int i = count; i > index; i--)
+        {
+            array[i] = array[i-1];
+        }
+        array[index] = elem;
+        count++;
+    }
+
 }
 
 int IntVector::at(int index) const {
-    if(index > count || index < 0)
+    if(index > count-1 || index < 0)
     {
         //kasta error
     }
@@ -75,7 +80,14 @@ int IntVector::at(int index) const {
 }
 
 void IntVector::set_value_at(int index, int elem) {
-    array[index] = elem;
+    if(index > count-1 || index < 0)
+    {
+        //kasta error
+    }
+    else
+    {
+        array[index] = elem;
+    }
 }
 
 int IntVector::size() const {
@@ -91,25 +103,40 @@ bool IntVector::empty() const {
 }
 
 void IntVector::remove_at(int index) {
-    for(int i = index; i < count; i++)
+    if(index > count-1 || index < 0)
     {
-        cout << array[index] << " becomes " << array[index+1] << endl;
-        array[i] = array[i+1];
+        //kasta error
+    }
+    else
+    {
+        for(int i = index; i < count; i++)
+        {
+            array[i] = array[i+1];
+        }
+
+        array[count-1] = NULL;
+        count--;
     }
 
-    array[count-1] = NULL;
-    count--;
 }
 
 int IntVector::pop_back() {
-    int popped = 0;
+    if(empty())
+    {
+        //empty exeption
+    }
+    else
+    {
+        int popped = 0;
 
-    popped = array[count-1];
-    array[count-1] = NULL;
+        popped = array[count-1];
+        array[count-1] = NULL;
 
-    count--;
+        count--;
 
-    return popped;
+        return popped;
+
+    }
 }
 
 void IntVector::clear() {
@@ -137,8 +164,16 @@ void IntVector::operator=(const IntVector& vec) {
 }
 
 int& IntVector::operator[] (int index) {
-    // TODO: Throw exception if index is out of range.
-    return array[index];
+    if(index > count-1 || index < 0)
+    {
+        //kasta error
+    }
+    else
+    {
+        return array[index];
+    }
+
+
 }
 
 ostream& operator<< (ostream& out, const IntVector& rhs) {

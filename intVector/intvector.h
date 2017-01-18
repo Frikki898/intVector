@@ -64,6 +64,7 @@ class IntVector
         void remove_at(int index);
         // Removes all the elements from the list
         void clear();
+        // checks to see if the array is full and needs to be resized
         void resizeArrayCheck();
 
         // Overloaded = operator.
